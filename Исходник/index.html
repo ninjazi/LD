@@ -1,0 +1,381 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .prop-entry {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .prop-entry img, .prop-entry figure {
+        margin-bottom: 0;
+    }
+
+    .prop-entry .prop-text {
+        position: absolute;
+        bottom: -50px;
+        width: 100%;
+        z-index: 2;
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease;
+    }
+
+    .prop-entry .prop-text .inner {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .prop-entry .prop-text:before {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: -moz-linear-gradient(top, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.8) 99%, rgba(0, 0, 0, 0.8) 100%);
+        background: -webkit-linear-gradient(top, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.8) 99%, rgba(0, 0, 0, 0.8) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(18%, transparent), color-stop(99%, rgba(0, 0, 0, 0.8)), to(rgba(0, 0, 0, 0.8)));
+        background: -o-linear-gradient(top, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.8) 99%, rgba(0, 0, 0, 0.8) 100%);
+        background: linear-gradient(to bottom, transparent 0%, transparent 18%, rgba(0, 0, 0, 0.8) 99%, rgba(0, 0, 0, 0.8) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#cc000000', GradientType=0);
+    }
+
+    .prop-entry .prop-text .prop-more-info {
+        font-size: 12px;
+        background: #f89d13;
+        position: relative;
+        z-index: 4;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .prop-entry .prop-text .prop-more-info .col {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        color: #fff;
+    }
+
+    .prop-entry .prop-text .prop-more-info span {
+        display: block;
+    }
+
+    .prop-entry .prop-text .price {
+        background: #f89d13;
+        color: #fff;
+        padding: 4px 10px;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .prop-entry .prop-text .title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 0;
+    }
+
+    .prop-entry .prop-text .location {
+        font-size: 15px;
+        color: #e6e6e6;
+    }
+
+    .prop-entry:hover .prop-text {
+        bottom: 0;
+    }
+
+    .range-value {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #f6931f;
+    }
+
+    .input-value {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    .margin-0 {
+        margin: 0;
+    }
+
+    .margin-top-30 {
+        margin-top: 32px;
+    }
+
+    .margin-left-15 {
+        margin-left: 15px;
+    }
+
+    .form-group-mg {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    .slider {
+        background-color: #ccc;
+        margin-top: 10px;
+        width: calc(100% - 22px);
+    }
+
+    .ui-slider-range {
+        background-color: #f6931f;
+    }
+
+    .value2-margin {
+        right: 0;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .ui-slider-handle {
+        border-radius: 50%;
+        background-color: orange !important;
+        border: 2px solid white !important;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .slider-value {
+        position: absolute;
+    }
+
+</style>
+<div class="container text-nowrap">
+    <div class="row">
+        <div class="col">
+            <form id="custom-form" style="width: 100%;">
+                <div class="form-row">
+                    <div class="form-group col form-group-mg">
+                        <label for="material">Материал:</label>
+                        <select id="material" name="material" class="form-control">
+                            <option selected="">Выбрать</option>
+                            <option value="timber">Брус</option>
+                            <option value="brick">Кирпич</option>
+                            <option value="sip_panels">Сип панели</option>
+                        </select>
+                    </div>
+                    <div class="form-group col form-group-mg">
+                        <label for="cost-range">Стоимость строительства, млн. рублей</label>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 margin-0">
+                                <input type="number" id="area-before" name="area-before"
+                                       class="input-value form-control" placeholder="От">
+                            </div>
+                            <div class="form-group col-md-6 margin-0">
+                                <input type="number" id="area-after" name="area-after" class="input-value form-control"
+                                       placeholder="До">
+                            </div>
+                        </div>
+                        <div class="slider-container margin-left-15">
+                            <div id="area-slider" class="slider"></div>
+                            <div class="slider-value" id="area-value1" name="area-value1">0</div>
+                            <div class="slider-value value2-margin" id="area-value2" name="area-value2">129</div>
+                        </div>
+                    </div>
+                    <div class="form-group col form-group-mg">
+                        <label for="area-range">Площадь, кв.м</label>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 margin-0">
+                                <input type="number" id="cost-before" name="cost-before"
+                                       class="input-value form-control" placeholder="От">
+                            </div>
+                            <div class="form-group col-md-6 margin-0">
+                                <input type="number" id="cost-after" name="cost-after" class="input-value form-control"
+                                       placeholder="До">
+                            </div>
+                        </div>
+                        <div class="slider-container margin-left-15">
+                            <div id="cost-slider" class="slider"></div>
+                            <div class="slider-value" id="cost-value1" name="cost-value1">0</div>
+                            <div class="slider-value value2-margin" id="cost-value2" name="cost-value2">2600</div>
+                        </div>
+                    </div>
+                    <div class="form-group col form-group-mg">
+                        <button type="submit" class="btn btn-dark margin-top-30">Найти проекты</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="site-section-title">
+            <h2>Результаты поиска:</h2>
+        </div>
+    </div>
+</div>
+<div id="results-container" class="row mb-5"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(function () {
+
+
+        $(function () {
+            $("#cost-slider").slider({
+                range: true,
+                min: 0,
+                max: 2600,
+                values: [0, 2600],
+                slide: function (event, ui) {
+                    $("#cost-amount").val(ui.values[0] + " - " + ui.values[1]);
+                    $("#cost-before").val(ui.values[0]);
+                    $("#cost-after").val(ui.values[1]);
+
+                    // Обновляем позиции и значения цифр
+                    updateNumberDisplay(ui.values[0], ui.values[1], "#cost-slider");
+                }
+            });
+
+            function updateNumberDisplay(value1, value2, sliderId) {
+                var sliderWidth = $(sliderId).width();
+                var sliderStart = $(sliderId).offset().left;
+                var sliderEnd = sliderStart + sliderWidth;
+
+                var position1 = (value1 / 2600) * sliderWidth;
+                var position2 = (value2 / 2600) * sliderWidth;
+
+                // Позиционируем цифры прямо под ползунками
+                $('#cost-value1').text(value1).css('left', 25 + position1 + 'px');
+                $('#cost-value2').text(value2).css('left', 25 + position2 + 'px');
+            }
+
+            $("#cost-amount").val($("#cost-slider").slider("values", 0) +
+                " - " + $("#cost-slider").slider("values", 1));
+        });
+
+        // Инициализация слайдера для площади
+        $(function () {
+            $("#area-slider").slider({
+                range: true,
+                min: 0,
+                max: 129,
+                values: [0, 129],
+                slide: function (event, ui) {
+                    $("#area-amount").val(ui.values[0] + " - " + ui.values[1]);
+                    $("#area-before").val(ui.values[0]);
+                    $("#area-after").val(ui.values[1]);
+
+                    // Обновляем позиции и значения цифр
+                    updateNumberDisplay(ui.values[0], ui.values[1], "#area-slider");
+                }
+            });
+
+            function updateNumberDisplay(value1, value2, sliderId) {
+                var sliderWidth = $(sliderId).width();
+                var sliderStart = $(sliderId).offset().left;
+                var sliderEnd = sliderStart + sliderWidth;
+
+                var position1 = (value1 / 129) * sliderWidth;
+                var position2 = (value2 / 129) * sliderWidth;
+
+                // Позиционируем цифры прямо под ползунками
+                $('#area-value1').text(value1).css('left', 25 + position1 + 'px');
+                $('#area-value2').text(value2).css('left', 25 + position2 + 'px');
+            }
+
+            $("#area-amount").val($("#area-slider").slider("values", 0) +
+                " - " + $("#area-slider").slider("values", 1));
+        });
+
+
+    });
+</script>
+<script>
+    jQuery(document).ready(function ($) {
+        $('#custom-form').submit(function (event) {
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+            // Получаем данные формы
+            var formData = $(this).serialize();
+
+            // Отправляем AJAX-запрос
+            $.ajax({
+                type: 'POST',
+                url: '../wp-admin/admin-ajax.php',
+                data: {
+                    action: 'custom_form_submit', // Действие, которое мы обрабатываем в WordPress
+                    data: formData,
+                },
+                dataType: 'JSON',
+                success: function (response) {
+                    // Проверяем, есть ли данные в ответе
+                    if (response.posts.length > 0) {
+                        var postsHTML = '';
+
+                        $('#results-container').empty();
+
+                        $.each(response.posts, function (index, post) {
+                            postsHTML += '<div class="col-md-6 col-lg-4 mb-4">';
+                            postsHTML += '<a href="' + post.permalink + '" class="prop-entry d-block">';
+                            postsHTML += '<figure>';
+                            postsHTML += '<img decoding="async" src="' + post.preview + '" alt="Image" class="img-fluid">';
+                            postsHTML += '</figure>';
+                            postsHTML += '<div class="prop-text">';
+                            postsHTML += '<div class="inner">';
+                            postsHTML += '<span class="price rounded">' + post.price + '</span>';
+                            postsHTML += '<h3 class="title">' + post.title + '</h3>';
+                            postsHTML += '<p class="location"> no location </p>';
+                            postsHTML += '</div>';
+                            postsHTML += '<div class="prop-more-info">';
+                            postsHTML += '<div class="inner d-flex">';
+                            postsHTML += '<div class="col">';
+                            postsHTML += '<span>Area:</span>';
+                            postsHTML += '<strong>' + post.square + 'm<sup>2</sup></strong>';
+                            postsHTML += '</div>';
+                            postsHTML += '<div class="col">';
+                            postsHTML += '<span>Beds:</span>';
+                            postsHTML += '<strong>2</strong>';
+                            postsHTML += '</div>';
+                            postsHTML += '<div class="col">';
+                            postsHTML += '<span>Baths:</span>';
+                            postsHTML += '<strong>3</strong>';
+                            postsHTML += '</div>';
+                            postsHTML += '<div class="col">';
+                            postsHTML += '<span>Garages:</span>';
+                            postsHTML += '<strong>4 </strong>';
+                            postsHTML += '</div>';
+                            postsHTML += '</div>';
+                            postsHTML += '</div>';
+                            postsHTML += '</div>';
+                            postsHTML += '</a>';
+                            postsHTML += '</div>';
+                        });
+
+                        // Вставляем HTML в ваш элемент
+                        $('#results-container').append(postsHTML);
+                    } else {
+                        // Выводим сообщение, если данных нет
+                        $('#results-container').html('<p>По вашему запросу ничего не найдено</p>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // В случае ошибки выводим сообщение об ошибке
+                    alert('Произошла ошибка при отправке данных: ' + error);
+                }
+            });
+        });
+    });
+</script>
